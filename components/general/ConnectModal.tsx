@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useState } from 'react';
-import { useConnect } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
@@ -15,6 +15,8 @@ function ConnectModal({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Funct
       },
     }),
   });
+  const { connector } = useAccount();
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -22,15 +24,15 @@ function ConnectModal({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Funct
   const [walletConnectBg, setWalletConnectBg] = useState('bg-neutral-800');
 
   useEffect(() => {
-    if (injected.isSuccess) {
+    if (!connector) return;
+    if (connector.name !== 'WalletConnect') {
       setInjectedBg('bg-green-700');
       setWalletConnectBg('bg-neutral-800');
-    }
-    if (walletConnect.isSuccess) {
+    } else {
       setInjectedBg('bg-neutral-800');
       setWalletConnectBg('bg-green-700');
     }
-  }, [injected.isSuccess, walletConnect.isSuccess]);
+  }, [connector, injected.isSuccess, walletConnect.isSuccess]);
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -66,9 +68,7 @@ function ConnectModal({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Funct
                   <button
                     className={'py-1 px-4 text-md font-semibold rounded-lg hover:opacity-70 ' + injectedBg}
                     onClick={() => {
-                      if (!injected.isSuccess) {
-                        injected.connect();
-                      }
+                      injected.connect();
                     }}
                   >
                     Injected/Metamask
@@ -76,9 +76,7 @@ function ConnectModal({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Funct
                   <button
                     className={'py-1 px-4 text-md font-semibold rounded-lg hover:opacity-70 ' + walletConnectBg}
                     onClick={() => {
-                      if (!injected.isSuccess) {
-                        walletConnect.connect();
-                      }
+                      walletConnect.connect();
                     }}
                   >
                     WalletConnect
