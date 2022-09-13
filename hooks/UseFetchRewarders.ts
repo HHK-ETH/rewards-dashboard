@@ -1,6 +1,6 @@
 import request from 'graphql-request';
 import { useCallback, useEffect, useState } from 'react';
-import { SUBGRAPH_QUERY, SUBGRAPH_URL } from '../constants';
+import { MASTERCHEFV2_SUBGRAPH_QUERY, MASTERCHEFV2_SUBGRAPH_URL } from '../constants';
 
 function UseFetchRewarders(): { rewarders: any[]; loading: boolean } {
   const [rewarders, setRewarders] = useState([]);
@@ -8,7 +8,7 @@ function UseFetchRewarders(): { rewarders: any[]; loading: boolean } {
 
   const fetchRewarders = useCallback(async () => {
     setLoading(true);
-    const results = await request(SUBGRAPH_URL, SUBGRAPH_QUERY);
+    const results = await request(MASTERCHEFV2_SUBGRAPH_URL, MASTERCHEFV2_SUBGRAPH_QUERY);
     setRewarders(results.masterChefV2PoolInfos);
     setLoading(false);
   }, []);

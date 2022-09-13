@@ -11,7 +11,7 @@ function Browse() {
       <Header />
       <main className="container mx-auto pt-16 ">
         <input
-          className="block bg-neutral-600 text-lg text-center mx-auto py-2 px-4 rounded-xl w-1/3 shadow-lg"
+          className="block bg-neutral-600 mb-8 text-lg text-center mx-auto py-2 px-4 rounded-xl w-1/3 shadow-lg"
           type={'text'}
           placeholder={'Find by token name or symbol (ex: Lido, LDO...)'}
         />
