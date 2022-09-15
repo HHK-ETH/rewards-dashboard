@@ -16,7 +16,7 @@ function Browse({ rewarders }: { rewarders: Rewarder[] }) {
       <Header />
       <main className="container pt-16 mx-auto ">
         <select
-          className="block w-1/4 px-4 py-2 mx-auto mb-8 text-lg text-center shadow-lg bg-neutral-600 rounded-xl"
+          className="block w-1/4 px-4 py-2 mx-auto mb-4 text-lg text-center shadow-lg bg-neutral-600 rounded-xl"
           onChange={(e) => {
             router.push('/browse/' + e.target.value);
           }}
