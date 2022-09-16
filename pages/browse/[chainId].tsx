@@ -20,7 +20,7 @@ function Browse({ rewarders }: { rewarders: Rewarder[] }) {
           onChange={(e) => {
             router.push('/browse/' + e.target.value);
           }}
-          defaultValue={chainId ? chainId[0] : '1'}
+          defaultValue={chainId ? chainId : '1'}
         >
           {Object.keys(MINICHEF_ADDRESS).map((id) => {
             return (
@@ -45,7 +45,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const params = context.params;
   let chainId = '1';
   if (params && params.chainId) {
-    chainId = params.chainId[0];
+    chainId = params.chainId.toString();
   }
   const res = await fetch(`https://rewards.sushibackup.com/api/${chainId}`, {
     headers: new Headers({
