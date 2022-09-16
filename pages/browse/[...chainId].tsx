@@ -53,7 +53,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
   });
-  let rewarders = [];
+  let rewarders: Rewarder[] = [];
   if (res.status === 200) {
     rewarders = await res.json();
   }
