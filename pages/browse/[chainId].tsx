@@ -8,6 +8,7 @@ import { ChainId, MINICHEF_ADDRESS, Rewarder } from '../../constants';
 function Browse({ rewarders }: { rewarders: Rewarder[] }) {
   const router = useRouter();
   const { chainId } = router.query;
+
   return (
     <div className="min-h-screen text-white bg-neutral-800">
       <Head>
@@ -35,7 +36,7 @@ function Browse({ rewarders }: { rewarders: Rewarder[] }) {
           type={'text'}
           placeholder={'Find by token name or symbol (ex: Lido, LDO...)'}
         />
-        <Rewarders rewarders={rewarders} />
+        <Rewarders rewarders={rewarders} chainId={chainId ? chainId.toString() : '1'} />
       </main>
     </div>
   );
@@ -56,6 +57,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   let rewarders: Rewarder[] = [];
   if (res.status === 200) {
     rewarders = await res.json();
+    rewarders = rewarders.sort((rewarderA: Rewarder, rewarderB: Rewarder) => {
+      return rewarderA.pair.reserveUSD > rewarderB.pair.reserveUSD ? -1 : 1;
+    });
   }
 
   // Pass data to the page via props
