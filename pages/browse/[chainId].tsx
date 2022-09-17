@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import Header from '../../components/general/Header';
 import Rewarders from '../../components/rewarder/Rewarders';
 import { ChainId, MINICHEF_ADDRESS, Rewarder } from '../../constants';
@@ -8,6 +9,22 @@ import { ChainId, MINICHEF_ADDRESS, Rewarder } from '../../constants';
 function Browse({ rewarders }: { rewarders: Rewarder[] }) {
   const router = useRouter();
   const { chainId } = router.query;
+  const [search, setSearch] = useState('');
+  const [filteredRewarders, setFilteredRewarders] = useState(rewarders);
+
+  useEffect(() => {
+    setFilteredRewarders(
+      rewarders.filter((rewarder) => {
+        if (rewarder.pair.symbol.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+          return true;
+        }
+        if (rewarder.rewardToken.symbol.toLowerCase().indexOf(search.toLowerCase()) !== -1) {
+          return true;
+        }
+        return false;
+      })
+    );
+  }, [rewarders, search]);
 
   return (
     <div className="min-h-screen text-white bg-neutral-800">
@@ -34,9 +51,11 @@ function Browse({ rewarders }: { rewarders: Rewarder[] }) {
         <input
           className="block w-1/3 px-4 py-2 mx-auto mb-8 text-lg text-center shadow-lg bg-neutral-600 rounded-xl"
           type={'text'}
-          placeholder={'Find by token name or symbol (ex: Lido, LDO...)'}
+          placeholder={'Find by token name or symbol (ex: SOS, LDO...)'}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <Rewarders rewarders={rewarders} chainId={chainId ? chainId.toString() : '1'} />
+        <Rewarders rewarders={filteredRewarders} chainId={chainId ? chainId.toString() : '1'} />
       </main>
     </div>
   );
