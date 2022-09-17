@@ -14,9 +14,6 @@ function Rewarder({ rewarder, chainId }: { rewarder: Rewarder | null; chainId: s
       return;
     }
     setTimeDiff(Date.now() / 1000 - rewarder.lastUpdated);
-    setInterval(() => {
-      setTimeDiff(Date.now() / 1000 - rewarder.lastUpdated);
-    }, 10_000);
   }, [rewarder]);
 
   return (
