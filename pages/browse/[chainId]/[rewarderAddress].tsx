@@ -9,16 +9,15 @@ import { Rewarder } from '../../../constants';
 
 function Rewarder({ initialRewarder, chainId }: { initialRewarder: Rewarder | null; chainId: string }) {
   const [rewarder, setRewarder] = useState(initialRewarder);
-  const [showReload, setShowReload] = useState(rewarder ? (Date.now() / 1000 - rewarder.lastUpdated) / 60 > 3 : false);
+  const [timeDiff, setTimeDiff] = useState(0);
   useEffect(() => {
     if (!rewarder) {
       return;
     }
+    setTimeDiff(Date.now() / 1000 - rewarder.lastUpdated);
     setInterval(() => {
-      if ((Date.now() / 1000 - rewarder.lastUpdated) / 60 > 3) {
-        setShowReload(true);
-      }
-    }, 30_000);
+      setTimeDiff(Date.now() / 1000 - rewarder.lastUpdated);
+    }, 10_000);
   }, [rewarder]);
 
   return (
@@ -34,9 +33,9 @@ function Rewarder({ initialRewarder, chainId }: { initialRewarder: Rewarder | nu
         {rewarder === null && <h1 className="text-xl text-center">Impossible to retrieve data for this rewarder.</h1>}
         {rewarder !== null && (
           <>
-            {showReload && (
+            {timeDiff / 60 > 3 && (
               <h1 className="text-xl text-center">
-                The displayed data is {((Date.now() / 1000 - rewarder.lastUpdated) / 60).toFixed(2)} minutes old
+                The displayed data is {(timeDiff / 60).toFixed(2)} minutes old
                 <button
                   onClick={() => updateRewarder(chainId, rewarder.id, setRewarder)}
                   className="px-4 py-2 m-2 text-xl rounded-lg hover:opacity-80 bg-neutral-600"

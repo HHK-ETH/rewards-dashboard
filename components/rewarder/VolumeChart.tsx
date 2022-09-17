@@ -2,10 +2,11 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { Rewarder } from '../../constants';
 
 function VolumeChart({ rewarder }: { rewarder: Rewarder }): JSX.Element {
+  const reverseVolume = rewarder.pair.volumeUSD.slice().reverse();
   return (
     <ResponsiveContainer height={500}>
       <LineChart
-        data={rewarder.pair.volumeUSD.reverse().map((volume, index) => {
+        data={reverseVolume.map((volume, index) => {
           const date = new Date(Date.now() - (29 - index) * 3600 * 24 * 1000);
           const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
           const month = date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
