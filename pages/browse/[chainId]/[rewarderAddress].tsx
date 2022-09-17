@@ -7,8 +7,7 @@ import RewarderMainData from '../../../components/rewarder/RewarderMainData';
 import VolumeChart from '../../../components/rewarder/VolumeChart';
 import { Rewarder } from '../../../constants';
 
-function Rewarder({ initialRewarder, chainId }: { initialRewarder: Rewarder | null; chainId: string }) {
-  const [rewarder, setRewarder] = useState(initialRewarder);
+function Rewarder({ rewarder, chainId }: { rewarder: Rewarder | null; chainId: string }) {
   const [timeDiff, setTimeDiff] = useState(0);
   useEffect(() => {
     if (!rewarder) {
@@ -36,12 +35,11 @@ function Rewarder({ initialRewarder, chainId }: { initialRewarder: Rewarder | nu
             {timeDiff / 60 > 3 && (
               <h1 className="text-xl text-center">
                 The displayed data is {(timeDiff / 60).toFixed(2)} minutes old
-                <button
-                  onClick={() => updateRewarder(chainId, rewarder.id, setRewarder)}
-                  className="px-4 py-2 m-2 text-xl rounded-lg hover:opacity-80 bg-neutral-600"
-                >
-                  &#8634; update now
-                </button>
+                <Link href={`/browse/${chainId}/${rewarder.id}?update=true`}>
+                  <button className="px-4 py-2 m-2 text-xl rounded-lg hover:opacity-80 bg-neutral-600">
+                    &#8634; update now
+                  </button>
+                </Link>
               </h1>
             )}
             <RewarderMainData rewarder={rewarder} />
@@ -60,6 +58,7 @@ function Rewarder({ initialRewarder, chainId }: { initialRewarder: Rewarder | nu
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const params = context.params;
+  let query = context.query;
   let chainId = '1';
   let rewarderAddress = '0x0000000000000000000000000000000000000000';
   if (params && params.chainId && params.rewarderAddress) {
@@ -71,6 +70,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       Authorization: 'Bearer ' + process.env.API_TOKEN,
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
+    method: query.update ? 'POST' : 'GET',
   });
   let rewarder: Rewarder | null = null;
   if (res.status === 200) {
@@ -78,22 +78,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   // Pass data to the page via props
-  return { props: { initialRewarder: rewarder, chainId } };
-}
-
-async function updateRewarder(chainId: string, rewarderAddress: string, setRewarder: Function): Promise<void> {
-  const res = await fetch(`https://rewards.sushibackup.com/api/${chainId}/${rewarderAddress}`, {
-    method: 'POST',
-    headers: new Headers({
-      Authorization: 'Bearer ' + process.env.API_TOKEN,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }),
-  });
-  let rewarder: Rewarder | null = null;
-  if (res.status === 200) {
-    rewarder = await res.json();
-    setRewarder(rewarder);
-  }
+  return { props: { rewarder, chainId } };
 }
 
 export default Rewarder;
