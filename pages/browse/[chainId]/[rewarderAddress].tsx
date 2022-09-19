@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Header from '../../../components/general/Header';
+import RewarderExtraData from '../../../components/rewarder/RewarderExtraData';
 import RewarderMainData from '../../../components/rewarder/RewarderMainData';
 import VolumeChart from '../../../components/rewarder/VolumeChart';
 import { Rewarder } from '../../../constants';
@@ -44,7 +45,9 @@ function Rewarder({ rewarder, chainId }: { rewarder: Rewarder | null; chainId: s
               <div className="p-4 rounded-md shadow-xl bg-neutral-600">
                 <VolumeChart rewarder={rewarder} />
               </div>
-              <div className="p-4 rounded-md shadow-xl bg-neutral-600">okok</div>
+              <div className="p-2 rounded-md shadow-xl bg-neutral-600">
+                <RewarderExtraData chainId={chainId} rewarder={rewarder} />
+              </div>
             </div>
           </>
         )}
