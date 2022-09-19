@@ -33,6 +33,17 @@ function RewarderExtraData({ chainId, rewarder }: { chainId: string; rewarder: R
           <h2 className="font-bold">LP token address: </h2>
           <h2 className="col-span-2">{rewarder.pair.id}</h2>
         </div>
+        <div className="grid grid-cols-3 gap-2">
+          <h2 className="font-bold">Masterchef pool id: </h2>
+          <h2 className="col-span-2">{rewarder.masterchefId}</h2>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <h2 className="font-bold">Reward per second: </h2>
+          <h2 className="col-span-2">
+            {parseFloat(formatUnits(rewarder.rewardPerSecond, rewarder.rewardToken.decimals)).toFixed(4)}{' '}
+            {rewarder.rewardToken.symbol}/second
+          </h2>
+        </div>
       </div>
       <div className="p-4 mt-2 text-xl rounded-lg bg-neutral-700">
         <div className="grid grid-cols-2 gap-2">
@@ -50,7 +61,7 @@ function RewarderExtraData({ chainId, rewarder }: { chainId: string; rewarder: R
           <h2 className="">{(tokenPerDay * tokenPrice).toFixed(2)}$ per day</h2>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <h2 className="font-bold ">Ratio volume/reward: </h2>
+          <h2 className="font-bold ">Ratio volume/rewards: </h2>
           <h2 className={volumeRewardRatio >= 1 ? 'text-green-600' : 'text-red-600'}>{volumeRewardRatio.toFixed(2)}</h2>
         </div>
         <div className="grid grid-cols-2 gap-2">
@@ -59,6 +70,14 @@ function RewarderExtraData({ chainId, rewarder }: { chainId: string; rewarder: R
             {balanceRewardsDueRatio.toFixed(2)}
           </h2>
         </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3 mt-8">
+        <button className="block py-4 text-xl font-semibold rounded-lg cursor-pointer bg-neutral-700 hover:opacity-80">
+          Update reward rate
+        </button>
+        <button className="block py-4 text-xl font-semibold rounded-lg cursor-pointer bg-neutral-700 hover:opacity-80">
+          Refill rewarder
+        </button>
       </div>
     </>
   );
