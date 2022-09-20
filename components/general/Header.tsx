@@ -5,26 +5,26 @@ import { useAccount } from 'wagmi';
 import ConnectModal from './ConnectModal';
 
 function Header(): JSX.Element {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, connector } = useAccount();
   const [label, setLabel] = useState('Connect wallet');
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && connector) {
       setLabel(address.slice(0, 4) + '...' + address.slice(-4));
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, connector]);
 
   return (
-    <header className="p-2 bg-neutral-900 shadow-lg">
+    <header className="p-2 shadow-lg bg-neutral-900">
       <nav className="">
         <Link href={'/'}>
           <div className="inline-block cursor-pointer">
             <Image src={'/sushilogo.png'} alt={'Sushi Logo'} layout={'intrinsic'} height={'50'} width={'50'} />
-            <h1 className="text-3xl inline-block align-top mt-2 ml-2">SUSHI</h1>
+            <h1 className="inline-block mt-2 ml-2 text-3xl align-top">SUSHI</h1>
           </div>
         </Link>
         <button
-          className="float-right bg-neutral-700 py-1 px-4 text-xl font-semibold rounded-lg m-2"
+          className="float-right px-4 py-1 m-2 text-xl font-semibold rounded-lg bg-neutral-700"
           onClick={() => setIsOpen(true)}
         >
           {label}
