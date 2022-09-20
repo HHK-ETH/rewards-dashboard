@@ -1,4 +1,9 @@
 import { BigNumber } from 'ethers';
+import erc20ABI from './abis/erc20.json';
+import rewarderABI from './abis/rewarder.json';
+
+export const ERC20_ABI = erc20ABI;
+export const REWARDER_ABI = rewarderABI;
 
 export enum ChainId {
   ETHEREUM = 1,
