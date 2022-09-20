@@ -2,7 +2,17 @@ import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { ChainId, Rewarder } from '../../constants';
 
-function RewarderExtraData({ chainId, rewarder }: { chainId: string; rewarder: Rewarder }): JSX.Element {
+function RewarderExtraData({
+  chainId,
+  rewarder,
+  setOpenRefillModal,
+  setOpenUpdateRewardModal,
+}: {
+  chainId: string;
+  rewarder: Rewarder;
+  setOpenRefillModal: Function;
+  setOpenUpdateRewardModal: Function;
+}): JSX.Element {
   const volume30d = calculateAverageVolume(rewarder.pair.volumeUSD);
   const tokenPerDay = parseFloat(formatUnits(rewarder.rewardPerSecond, rewarder.rewardToken.decimals)) * 3600 * 24;
   const [tokenPrice, setTokenPrice] = useState(0);
@@ -28,6 +38,10 @@ function RewarderExtraData({ chainId, rewarder }: { chainId: string; rewarder: R
         <div className="grid grid-cols-3 gap-2">
           <h2 className="font-bold">Reward token address: </h2>
           <h2 className="col-span-2">{rewarder.rewardToken.id}</h2>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <h2 className="font-bold">LP name: </h2>
+          <h2 className="col-span-2">{rewarder.pair.symbol}</h2>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <h2 className="font-bold">LP token address: </h2>
@@ -72,10 +86,16 @@ function RewarderExtraData({ chainId, rewarder }: { chainId: string; rewarder: R
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 mt-8">
-        <button className="block py-4 text-xl font-semibold rounded-lg cursor-pointer bg-neutral-700 hover:opacity-80">
+        <button
+          className="block py-4 text-xl font-semibold rounded-lg cursor-pointer bg-neutral-700 hover:opacity-80"
+          onClick={() => setOpenUpdateRewardModal(true)}
+        >
           Update reward rate
         </button>
-        <button className="block py-4 text-xl font-semibold rounded-lg cursor-pointer bg-neutral-700 hover:opacity-80">
+        <button
+          className="block py-4 text-xl font-semibold rounded-lg cursor-pointer bg-neutral-700 hover:opacity-80"
+          onClick={() => setOpenRefillModal(true)}
+        >
           Refill rewarder
         </button>
       </div>

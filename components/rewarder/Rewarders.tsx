@@ -16,7 +16,7 @@ function Rewarders({ rewarders, chainId }: { rewarders: Rewarder[]; chainId: str
       </div>
       {rewarders.map((rewarder, index) => {
         return (
-          <Link key={index} href={`/browse/${chainId}/${rewarder.id}`}>
+          <Link key={index} href={`/browse/${chainId}/${rewarder.masterchefId}`}>
             <div className="grid grid-cols-7 p-4 m-2 text-xl text-center rounded-lg cursor-pointer bg-neutral-700 hover:opacity-80">
               <div>{rewarder.pair.symbol}</div>
               <div>{rewarder.pair.reserveUSD.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')} $</div>

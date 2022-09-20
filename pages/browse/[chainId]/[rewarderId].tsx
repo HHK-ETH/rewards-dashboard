@@ -3,13 +3,17 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Header from '../../../components/general/Header';
+import RefillRewarderModal from '../../../components/rewarder/RefillRewarderModal';
 import RewarderExtraData from '../../../components/rewarder/RewarderExtraData';
 import RewarderMainData from '../../../components/rewarder/RewarderMainData';
+import UpdateRewardRateModal from '../../../components/rewarder/UpdateRewardRateModal';
 import VolumeChart from '../../../components/rewarder/VolumeChart';
 import { Rewarder } from '../../../constants';
 
 function Rewarder({ rewarder, chainId }: { rewarder: Rewarder | null; chainId: string }) {
   const [timeDiff, setTimeDiff] = useState(0);
+  const [openRefillModal, setOpenRefillModal] = useState(false);
+  const [openUpdateRewardModal, setOpenUpdateRewardModal] = useState(false);
   useEffect(() => {
     if (!rewarder) {
       return;
@@ -46,9 +50,26 @@ function Rewarder({ rewarder, chainId }: { rewarder: Rewarder | null; chainId: s
                 <VolumeChart rewarder={rewarder} />
               </div>
               <div className="p-2 rounded-md shadow-xl bg-neutral-600">
-                <RewarderExtraData chainId={chainId} rewarder={rewarder} />
+                <RewarderExtraData
+                  chainId={chainId}
+                  rewarder={rewarder}
+                  setOpenRefillModal={setOpenRefillModal}
+                  setOpenUpdateRewardModal={setOpenUpdateRewardModal}
+                />
               </div>
             </div>
+            <RefillRewarderModal
+              rewarder={rewarder}
+              chainId={chainId}
+              isOpen={openRefillModal}
+              setIsOpen={setOpenRefillModal}
+            />
+            <UpdateRewardRateModal
+              rewarder={rewarder}
+              chainId={chainId}
+              isOpen={openUpdateRewardModal}
+              setIsOpen={setOpenUpdateRewardModal}
+            />
           </>
         )}
       </main>
@@ -60,12 +81,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const params = context.params;
   let query = context.query;
   let chainId = '1';
-  let rewarderAddress = '0x0000000000000000000000000000000000000000';
-  if (params && params.chainId && params.rewarderAddress) {
+  let rewarderId = '1';
+  if (params && params.chainId && params.rewarderId) {
     chainId = params.chainId.toString();
-    rewarderAddress = params.rewarderAddress.toString();
+    rewarderId = params.rewarderId.toString();
   }
-  const res = await fetch(`https://rewards.sushibackup.com/api/${chainId}/${rewarderAddress}`, {
+  const res = await fetch(`https://rewards.sushibackup.com/api/${chainId}/${rewarderId}`, {
     headers: new Headers({
       Authorization: 'Bearer ' + process.env.API_TOKEN,
       'Content-Type': 'application/x-www-form-urlencoded',
