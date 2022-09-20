@@ -11,7 +11,7 @@ function Rewarders({ rewarders, chainId }: { rewarders: Rewarder[]; chainId: str
         <div>Pool 24H volume</div>
         <div>Reward token</div>
         <div>Balance</div>
-        <div>Reward per block</div>
+        <div>Reward per second</div>
         <div>Reward due</div>
       </div>
       {rewarders.map((rewarder, index) => {
@@ -32,8 +32,8 @@ function Rewarders({ rewarders, chainId }: { rewarders: Rewarder[]; chainId: str
                 {rewarder.rewardToken.symbol}
               </div>
               <div>
-                {parseFloat(formatUnits(rewarder.rewardPerBlock, rewarder.rewardToken.decimals)).toFixed(4)}{' '}
-                {rewarder.rewardToken.symbol}/block
+                {parseFloat(formatUnits(rewarder.rewardPerSecond, rewarder.rewardToken.decimals)).toFixed(4)}{' '}
+                {rewarder.rewardToken.symbol}/sec
               </div>
               <div>
                 {parseFloat(formatUnits(rewarder.rewardsDue, rewarder.rewardToken.decimals)).toFixed(4)}{' '}
