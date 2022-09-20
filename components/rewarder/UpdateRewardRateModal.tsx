@@ -79,7 +79,7 @@ function UpdateRewardRateModal({
                       className="block w-2/4 px-4 py-2 mx-auto mt-4 text-xl rounded-lg shadow-lg bg-neutral-500 hover:opacity-80"
                       onClick={() => {}}
                     >
-                      Set new reward rate
+                      This feature is not yet available.
                     </button>
                   </div>
                 )}
